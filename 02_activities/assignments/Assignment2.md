@@ -46,7 +46,7 @@ There are several tools online you can use, I'd recommend [Draw.io](https://www.
 **HINT:** You do not need to create any data for this prompt. This is a logical model (ERD) only. 
 
 ```
-Please see Assign02-bookstore-ERD-logical.pdf
+Please see ERD-02.pdf
 ```
 
 
@@ -55,7 +55,7 @@ Please see Assign02-bookstore-ERD-logical.pdf
 We want to create employee shifts, splitting up the day into morning and evening. Add this to the ERD.
 
 ```
-Please see Assign02-bookstore-ERD-logical.pdf
+Please see ERD-02.pdf
 ```
 
 
@@ -66,7 +66,7 @@ The store wants to keep customer addresses. Propose two architectures for the CU
 **HINT:** search type 1 vs type 2 slowly changing dimensions. 
 
 ```
-Please see Module-SQL-Assign02-Section01-Prompt03.pdf
+Please see Assign02-Section01-Prompt03.pdf
 ```
 
 
