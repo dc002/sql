@@ -93,9 +93,12 @@ ALTER TABLE product ADD description varchar(45);
 
 UPDATE product
 SET description = CASE
-	WHEN INSTR(product_name,'-') > 0 THEN REPLACE(SUBSTR(product_name,INSTR(product_name,'-')),'- ','')
+	WHEN INSTR(product_name, '-') > 0 THEN
+		TRIM(SUBSTR(product_name, INSTR(product_name, '-') + 1))
 	ELSE NULL
 END;
+
+
 
 SELECT product_id, product_name, description FROM product ORDER BY product_id;
 
@@ -123,12 +126,25 @@ HINT: There are a possibly a few ways to do this query, but if you're struggling
 with a UNION binding them. */
 
 WITH daily_sales AS (
-SELECT market_date, sum(quantity*cost_to_customer_per_qty) AS daily_amount
-FROM customer_purchases
-GROUP BY market_date)
-SELECT market_date, MIN(daily_amount) AS total_sales, 'worst day' AS sales_performance FROM daily_sales
+  SELECT market_date, SUM(quantity * cost_to_customer_per_qty) AS daily_amount
+  FROM customer_purchases
+  GROUP BY market_date
+),
+ranked_sales AS (
+  SELECT 
+    market_date,
+    daily_amount,
+    RANK() OVER (ORDER BY daily_amount ASC) AS worst_rank,
+    RANK() OVER (ORDER BY daily_amount DESC) AS best_rank
+  FROM daily_sales
+)
+SELECT market_date, daily_amount AS total_sales, 'worst day' AS sales_performance
+FROM ranked_sales
+WHERE worst_rank = 1
 UNION
-SELECT market_date, MAX(daily_amount) AS total_sales, 'best day' AS sales_performance FROM daily_sales;
+SELECT market_date, daily_amount AS total_sales, 'best day' AS sales_performance
+FROM ranked_sales
+WHERE best_rank = 1;
 
 
 
